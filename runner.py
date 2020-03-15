@@ -5,6 +5,7 @@ import sys
 import time
 
 from selenium import webdriver
+import chromedriver_binary
 
 import xlsxwriter
 
