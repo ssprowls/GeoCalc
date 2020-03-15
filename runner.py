@@ -23,7 +23,7 @@ BASE_URL = 'https://earthquake.usgs.gov/designmaps/rtgm/'
 print('\nStarting...\n')
 
 # init webdriver
-driver = webdriver.Firefox()
+driver = webdriver.Chrome()
 driver.get(BASE_URL)
 driver.maximize_window()
 
