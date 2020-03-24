@@ -3,6 +3,7 @@ from decimal import Decimal
 import json
 import sys
 import time
+import traceback
 
 from selenium import webdriver
 import chromedriver_binary
@@ -38,13 +39,15 @@ worksheet = workbook.add_worksheet()
 row = 1
 col = 'A'
 
+spectral_periods = [0.0, 0.1, 0.2, 0.3, 0.5, 0.75, 1.0, 2.0, 3.0, 4.0, 5.0]
+
 print('Calculating values...\n')
 
 for x in range(11):
 
     try:
 
-        header = '-- SPECTRAL PERIOD {} --'.format(x + 1)
+        header = 'SPECTRAL PERIOD {}'.format(spectral_periods[x])
         print(header)
 
         worksheet.write('{}{}'.format(col, row), header)
@@ -79,7 +82,7 @@ for x in range(11):
         # curve title
         rtgm_title_inputElement = driver.find_element_by_id('rtgm-input-view-0-title')
         rtgm_title_inputElement.clear()
-        rtgm_title_inputElement.send_keys('Spectral Period: {}'.format(x + 1))
+        rtgm_title_inputElement.send_keys('Spectral Period: {}'.format(spectral_periods[x]))
 
         end = len(x_vals) - (flag - 1)
 
@@ -97,7 +100,7 @@ for x in range(11):
         rtgm_compute_button = driver.find_element_by_id('rtgm-input-view-0-compute')
         rtgm_compute_button.click()
 
-        time.sleep(.5)
+        time.sleep(1)
 
         # Note: need to go x + 2 for the index since it seems it's not zero based
         vals = [
@@ -109,6 +112,10 @@ for x in range(11):
         time.sleep(.5)
 
         # write data to workbook
+        worksheet.write('{}{}'.format(col, row), 'x_vals: {}'.format(x_vals[:end]))
+        row += 1
+        worksheet.write('{}{}'.format(col, row), 'y_vals: {}'.format(y_vals[:end]))
+        row += 1
         worksheet.write('{}{}'.format(col, row), 'UHGM: {}'.format(vals[0]))
         row += 1
         worksheet.write('{}{}'.format(col, row), 'RTGM: {}'.format(vals[1]))
@@ -118,8 +125,13 @@ for x in range(11):
 
     except Exception as ex:
 
-        print('Error... {}'.format(ex))
-        sys.exit(1)
+        # print('Error... {}'.format(ex))
+        try:
+            exc_info = sys.exc_info()
+        finally:
+            traceback.print_exception(*exc_info)
+            del exc_info
+            sys.exit(1)
 
 workbook.close()
 
