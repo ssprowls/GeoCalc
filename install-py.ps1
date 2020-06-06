@@ -9,7 +9,7 @@ If (Test-Path $FilePath) {
 
 Invoke-WebRequest -Uri "https://www.python.org/ftp/python/3.7.0/python-3.7.0.exe" -OutFile $FilePath
 
-C:\Users\spenc\Desktop\python-3.7.0.exe /quiet InstallAllUsers=0 PrependPath=1 Include_test=0
+C:\Users\Liam\Desktop\python-3.7.0.exe /quiet InstallAllUsers=0 PrependPath=1 Include_test=0
 
 Write-Host "Done!"
 Read-Host -Prompt "Press Enter to exit"
