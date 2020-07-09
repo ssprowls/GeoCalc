@@ -101,7 +101,7 @@ for x in range(11):
         rtgm_compute_button = driver.find_element_by_id('rtgm-input-view-0-compute')
         rtgm_compute_button.click()
 
-        time.sleep(1)
+        time.sleep(3)
 
         # Note: need to go x + 2 for the index since it seems it's not zero based
         vals = [
