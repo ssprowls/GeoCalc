@@ -6,7 +6,7 @@ import time
 import traceback
 
 from selenium import webdriver
-import chromedriver_binary
+import chromedriver_autoinstaller
 
 import xlsxwriter
 
@@ -25,6 +25,7 @@ BASE_URL = 'https://earthquake.usgs.gov/designmaps/rtgm/'
 print('\nStarting...\n')
 
 # init webdriver
+chromedriver_autoinstaller.install()
 driver = webdriver.Chrome()
 driver.get(BASE_URL)
 driver.maximize_window()
