@@ -6,6 +6,10 @@ import time
 import traceback
 
 from selenium import webdriver
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+
 import chromedriver_autoinstaller
 
 import xlsxwriter
@@ -101,15 +105,23 @@ for x in range(11):
         rtgm_compute_button = driver.find_element_by_id('rtgm-input-view-0-compute')
         rtgm_compute_button.click()
 
-        time.sleep(3)
+        #time.sleep(1)
 
-        # Note: need to go x + 2 for the index since it seems it's not zero based
+        # Note: need to go x + 2 for the index since it's not zero-based and the page starts with
+        #       an existing entry
         vals = [
-            driver.find_element_by_xpath('/html/body/main/div/div/div[2]/ul/li[{}]/dl/dd[1]'.format(x + 2)).text,
-            driver.find_element_by_xpath('/html/body/main/div/div/div[2]/ul/li[{}]/dl/dd[2]'.format(x + 2)).text,
-            driver.find_element_by_xpath('/html/body/main/div/div/div[2]/ul/li[{}]/dl/dd[3]'.format(x + 2)).text
+            WebDriverWait(driver, 10).until(EC.presence_of_element_located(
+                (By.XPATH, '/html/body/main/div/div/div[2]/ul/li[{}]/dl/dd[1]'.format(x + 2)))
+            ),
+            WebDriverWait(driver, 10).until(EC.presence_of_element_located(
+                (By.XPATH, '/html/body/main/div/div/div[2]/ul/li[{}]/dl/dd[2]'.format(x + 2)))
+            ),
+            WebDriverWait(driver, 10).until(EC.presence_of_element_located(
+                (By.XPATH, '/html/body/main/div/div/div[2]/ul/li[{}]/dl/dd[3]'.format(x + 2)))
+            )
         ]
 
+        # TODO: is this necessary?
         time.sleep(.5)
 
         # write data to workbook
@@ -134,6 +146,8 @@ for x in range(11):
             del exc_info
             sys.exit(1)
 
+# not going to close the driver in case we want to keep the web page open to verify
+# driver.close()
 workbook.close()
 
 print('Success...')
