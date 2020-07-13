@@ -105,20 +105,18 @@ for x in range(11):
         rtgm_compute_button = driver.find_element_by_id('rtgm-input-view-0-compute')
         rtgm_compute_button.click()
 
-        #time.sleep(1)
-
         # Note: need to go x + 2 for the index since it's not zero-based and the page starts with
         #       an existing entry
         vals = [
             WebDriverWait(driver, 10).until(EC.presence_of_element_located(
                 (By.XPATH, '/html/body/main/div/div/div[2]/ul/li[{}]/dl/dd[1]'.format(x + 2)))
-            ),
+            ).text,
             WebDriverWait(driver, 10).until(EC.presence_of_element_located(
                 (By.XPATH, '/html/body/main/div/div/div[2]/ul/li[{}]/dl/dd[2]'.format(x + 2)))
-            ),
+            ).text,
             WebDriverWait(driver, 10).until(EC.presence_of_element_located(
                 (By.XPATH, '/html/body/main/div/div/div[2]/ul/li[{}]/dl/dd[3]'.format(x + 2)))
-            )
+            ).text
         ]
 
         # TODO: is this necessary?
