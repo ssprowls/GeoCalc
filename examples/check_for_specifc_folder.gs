@@ -7,36 +7,33 @@ var target = "Summary and Project Info"
 function run() {
   var root = DriveApp.getFolderById(fid)
   
-  // the second parameter is a flag whether you want to print files
-  // (you can set to false to only list folders)
-  printContents(root, true) 
+  // make the inital call to check if the target folder exists
+  var found = checkExists(root, target)
+  Logger.log("The target folder \"" + target + "\" " + (found ? "exists!" : "does not exist."))
 }
 
-function printContents(root, includeFiles) {
-  try { 
+function checkExists(root, target) {
+  try {
     var rootName = root.getName()
     Logger.log("Starting at folder: " + rootName)
     
-    // check if we are in the directory we are looking for
     if (rootName === target) {
-      Logger.log("-- Target Hit! --") 
+      return true
     }
     
-    // iterate over file contents in the directory
-    var files = root.getFiles()
-    while (includeFiles === true && files.hasNext()) {
-      file = files.next()
-      Logger.log(rootName + " :: " + file)
-    }
+    // ... implicit 'else' b/c of return statement ...
     
     // iterate over each sub folder in the directory
     var subfolders = root.getFolders()
     while (subfolders.hasNext()) {
       // here we make the recursive call... like magic!
-      printContents(subfolders.next(), includeFiles)
+      if (checkExists(subfolders.next(), target) == true) {
+        return true
+      }
     }
   }
   catch (e) {
     Logger.log("printContents() :: " + e.toString()) 
   }
+  return false
 }
