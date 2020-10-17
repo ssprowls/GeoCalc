@@ -13,14 +13,14 @@ const to = ["spencer.sprowls@gmail.com"];
 // note for liam: after doing some testing, there are some projects that have
 //                an extra space at the end of the name, do you want to allow that?
 const validProjectNameRegex = "\s*[0-9]{4}_[0-9A-Z]{5}\s*";
-const validSummaryAndProjectInfoFolderNameRegex = "";
-const validReportsRecsPlansFolderNameRegex = "";
-const validCurvesFolderNameRegex = "";
+const validSummaryAndProjectInfoFolderNameRegex = "\s*Summary\s*(?:and|&)\s*Project\s*Info\s*";
+const validReportsRecsPlansFolderNameRegex = "\s*Reports,\s*Rec's(?:,)?\s*(?:and|&)\s*Plans\s*";
+const validCurvesFolderNameRegex = "\s*Curves\s*";
 
 // set the default names to use for the folders we may have to create
-const SummaryAndProjectInfoFolderName = "Summary & Project Info";
-const ReportsRecsPlansFolderName = "Reports, Rec's, & Plans";
-const CurvesFolderName = "Curves";
+const summaryAndProjectInfoFolderName = "Summary & Project Info";
+const reportsRecsPlansFolderName = "Reports, Rec's, & Plans";
+const curvesFolderName = "Curves";
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -90,7 +90,7 @@ function processProjectFolder(projectFolder) {
   // now that we have seen all the sub folders, determine what we need to do
   if (sFlag === false) {
     // create the new folder under the project folder we are in
-    let sFolder = createFolder(SummaryAndProjectInfoFolderName, projectFolder);
+    let sFolder = createFolder(summaryAndProjectInfoFolderName, projectFolder);
     // copy the contents of the template folder to the folder we just created
     copyFolder(DriveApp.getFolderById(templateId),
                sFolder,
@@ -103,10 +103,10 @@ function processProjectFolder(projectFolder) {
     }
   }
   if (rFlag === false) {
-    createFolder(ReportsRecsPlansFolderName, projectFolder);
+    createFolder(reportsRecsPlansFolderName, projectFolder);
   }
   if (cFlag === false) {
-    createFolder(CurvesFolderName, projectFolder);
+    createFolder(curvesFolderName, projectFolder);
   } 
 }
 
